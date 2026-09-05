@@ -1,9 +1,6 @@
 using System.Application.Services;
 using System.Application.Services.Implementation;
 using TinyPinyin;
-#if MONOANDROID || ANDROID
-using AndroidAppApplication = Android.App.Application;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
@@ -17,9 +14,6 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddTinyPinyin(this IServiceCollection services)
     {
-#if MONOANDROID || ANDROID
-        PinyinImpl.InitWithCnCityDict(AndroidAppApplication.Context);
-#endif
         services.AddSingleton<IPinyin, PinyinImpl>();
         return services;
     }

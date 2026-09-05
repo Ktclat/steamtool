@@ -116,16 +116,6 @@ namespace System.Application.Services.Implementation
                         return false;
                     }
                 }
-                //if (fileInfo.IsReadOnly&&(OperatingSystem2.IsMacOS() || (OperatingSystem2.IsLinux() && !s.IsAdministrator)))
-                //{
-                //    var editPath = Path.Combine(IOPath.CacheDirectory, "hosts");
-                //    var editInfo = new FileInfo(editPath);
-                //    if (editInfo.Exists)
-                //        editInfo.Delete();
-                //    fileInfo.CopyTo(editPath);
-                //    editInfo.Refresh();
-                //    fileInfo = editInfo;
-                //}
                 if (checkMaxLength)
                 {
                     if (fileInfo.Length > MaxFileLength)
@@ -144,9 +134,7 @@ namespace System.Application.Services.Implementation
                         }
                         catch
                         {
-                            message = (OperatingSystem2.IsMacOS() || OperatingSystem2.IsLinux()) ?
-                                AppResources.FileAttributeIsReadOnlyModifyFailSeeWebPage_.Format(UrlConstants.OfficialWebsite_UnixHostAccess) :
-                                AppResources.FileAttributeIsReadOnlyModifyFailTryBakDelAgain;
+                            message = AppResources.FileAttributeIsReadOnlyModifyFailTryBakDelAgain;
                             return false;
                         }
                         removeReadOnly = true;
@@ -694,7 +682,7 @@ namespace System.Application.Services.Implementation
                     if (result.ResultType == OperationResultType.Success)
                     {
                         var lines = result.AppendData;
-                        if (lines.Reverse().Any(x => x.StartsWith(MarkEnd)))
+                        if (Enumerable.Reverse(lines).Any(x => x.StartsWith(MarkEnd)))
                         {
                             return true;
                         }

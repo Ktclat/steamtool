@@ -13,9 +13,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-#if WINDOWS
 using System.Management;
-#endif
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Versioning;
@@ -35,17 +33,7 @@ namespace System.Application.Services.Implementation
         const string ModifiedFileName = "modifications.vdf";
 
         /// <summary>
-        /// <list type="bullet">
-        ///   <item>
-        ///     Windows：~\Steam\config\loginusers.vdf
-        ///   </item>
-        ///   <item>
-        ///     Linux：~/.steam/steam/config/loginusers.vdf
-        ///   </item>
-        ///   <item>
-        ///     Mac：~/Library/Application Support/Steam/config/loginusers.vdf
-        ///   </item>
-        /// </list>
+        /// Windows: ~\Steam\config\loginusers.vdf
         /// </summary>
         readonly string? UserVdfPath;
         readonly string? ConfigVdfPath;
@@ -56,7 +44,7 @@ namespace System.Application.Services.Implementation
         readonly string? mSteamDirPath;
         readonly string? mSteamProgramPath;
         readonly string? mRegistryVdfPath;
-        readonly string[] steamProcess = new[] { OperatingSystem.IsMacOS() ? "steam_osx" : "steam", "steamservice", "steamwebhelper" };
+        readonly string[] steamProcess = new[] { "steam", "steamservice", "steamwebhelper" };
         readonly Lazy<IHttpService> _http = new(DI.Get<IHttpService>);
         List<FileSystemWatcher>? steamDownloadingWatchers;
 
@@ -149,24 +137,21 @@ namespace System.Application.Services.Implementation
 
         public bool IsSteamChinaLauncher()
         {
-#if WINDOWS
             var process = GetSteamProces();
-            if (process != null)
+            if (process is null) return false;
+            try
             {
-                try
-                {
-                    return GetCommandLineArgsCore().Contains("-steamchina", StringComparison.OrdinalIgnoreCase);
-                }
-                catch (Win32Exception ex) when ((uint)ex.ErrorCode == 0x80004005)
-                {
-                    // 没有对该进程的安全访问权限。
-                    return false;
-                }
-                catch (InvalidOperationException)
-                {
-                    // 进程已退出。
-                    return false;
-                }
+                return GetCommandLineArgsCore().Contains("-steamchina", StringComparison.OrdinalIgnoreCase);
+            }
+            catch (Win32Exception ex) when ((uint)ex.ErrorCode == 0x80004005)
+            {
+                // 没有对该进程的安全访问权限。
+                return false;
+            }
+            catch (InvalidOperationException)
+            {
+                // 进程已退出。
+                return false;
             }
             string GetCommandLineArgsCore()
             {
@@ -178,15 +163,13 @@ namespace System.Application.Services.Implementation
                     return @object?["CommandLine"]?.ToString() ?? "";
                 }
             }
-#endif
-            return false;
         }
 
         public void StartSteam(string? arguments = null)
         {
             if (!string.IsNullOrWhiteSpace(SteamProgramPath) && File.Exists(SteamProgramPath))
             {
-                if (OperatingSystem2.IsWindows() && !SteamSettings.IsRunSteamAdministrator.Value)
+                if (!SteamSettings.IsRunSteamAdministrator.Value)
                 {
                     platformService.StartAsInvoker(SteamProgramPath, arguments);
                 }

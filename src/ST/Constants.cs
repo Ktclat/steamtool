@@ -62,12 +62,6 @@ public static class Constants
             set => BaseUrl_API = value;
         }
 
-        public static string API_Advertisement_JumpUrl(Guid id)
-            => $"{BaseUrl_API}/api/Advertisement/Jump/{id}";
-
-        public static string API_Advertisement_ImageUrl(Guid id)
-            => $"{BaseUrl_API}/api/Advertisement/Images/{id}";
-
         #endregion
 
         #region Custom Url Scheme

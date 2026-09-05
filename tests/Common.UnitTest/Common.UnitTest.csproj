@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <RootNamespace>System</RootNamespace>
     <AssemblyName>System.Common.UnitTest</AssemblyName>
     <IsPackable>false</IsPackable>
@@ -22,9 +21,6 @@
     </Compile>
     <Compile Include="..\..\src\TargetFramework.cs">
       <Link>Utils\TargetFramework.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Common.ClientLib.Droid\Logging\LogHelper.cs">
-      <Link>Utils\LogHelper.cs</Link>
     </Compile>
   </ItemGroup>
 

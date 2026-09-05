@@ -319,20 +319,6 @@ namespace System.Application.UI
                     IViewModelManager.Instance.InitTaskBarWindowViewModel();
 
                     NotifyIconHelper.Init(this, NotifyIcon_Click);
-                    //                        if (!OperatingSystem2.IsLinux())
-                    //                        {
-                    //                            (var notifyIcon, var menuItemDisposable) = NotifyIconHelper.Init(NotifyIconHelper.GetIconByCurrentAvaloniaLocator);
-                    //                            notifyIcon.Click += NotifyIcon_Click;
-                    //                            notifyIcon.DoubleClick += NotifyIcon_Click;
-                    //                            if (menuItemDisposable != null) menuItemDisposable.AddTo(this);
-                    //                            notifyIcon.AddTo(this);
-                    //                        }
-                    //                        else
-                    //                        {
-                    //#if LINUX || DEBUG
-                    //                            NotifyIconHelper.StartPipeServer();
-                    //#endif
-                    //                        }
                 }
                 else
                 {
@@ -430,14 +416,6 @@ namespace System.Application.UI
             //            StartWatchTrace.Record("Desktop_Startup.Start");
             //#endif
             //            IsNotOfficialChannelPackageDetectionHelper.Check();
-            //#if WINDOWS || XAMARIN_MAC
-            //            if (isOfficialChannelPackage)
-            //            {
-            //#pragma warning disable CA1416 // 验证平台兼容性
-            //                ProgramHost.InitVisualStudioAppCenterSDK();
-            //#pragma warning restore CA1416 // 验证平台兼容性
-            //            }
-            //#endif
             //#if StartWatchTrace
             //            StartWatchTrace.Record("AppCenterSDK.Init");
             //#endif
@@ -465,10 +443,6 @@ namespace System.Application.UI
 
         void ApplicationLifetime_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
-            //#if LINUX || DEBUG
-            //            NotifyIconHelper.StopPipeServer();
-            //#endif
-
             try
             {
                 compositeDisposable.Dispose();

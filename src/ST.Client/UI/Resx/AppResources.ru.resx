@@ -3045,14 +3045,6 @@ AAAAA-BBBBB-CCCC3</value>
     <value>Загрузка {0} успешной</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
-  <data name="Advertisement" xml:space="preserve">
-    <value>объявление</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_Close" xml:space="preserve">
-    <value>Отключение рекламы</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
   <data name="Sign" xml:space="preserve">
     <value>Войти</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
@@ -3095,14 +3087,6 @@ AAAAA-BBBBB-CCCC3</value>
   </data>
   <data name="User_Experience" xml:space="preserve">
     <value>Очки опыта</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow" xml:space="preserve">
-    <value>Отключение всех объявлений в программе</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow_Tip" xml:space="preserve">
-    <value>Только спонсируемые пользователи могут установить его</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
   <data name="SeeDetails" xml:space="preserve">

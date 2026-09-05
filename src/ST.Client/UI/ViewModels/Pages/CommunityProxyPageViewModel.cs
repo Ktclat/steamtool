@@ -14,7 +14,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 
 // ReSharper disable once CheckNamespace
@@ -57,23 +56,20 @@ namespace System.Application.UI.ViewModels
 
         public CommunityProxyPageViewModel()
         {
-            if (IApplication.IsDesktopPlatform)
+            hostsFileService = IHostsFileService.Instance;
+            SetupCertificateCommand = ReactiveCommand.Create(SetupCertificate_OnClick);
+            DeleteCertificateCommand = ReactiveCommand.Create(DeleteCertificate_OnClick);
+            EditHostsFileCommand = ReactiveCommand.Create(hostsFileService.OpenFile);
+            OpenHostsDirCommand = ReactiveCommand.Create(hostsFileService.OpenFileDir);
+            ResetHostsFileCommand = ReactiveCommand.Create(hostsFileService.ResetFile);
+            NetworkFixCommand = ReactiveCommand.Create(ProxyService.Current.FixNetwork);
+            TrustCerCommand = ReactiveCommand.Create(TrustCer_OnClick);
+            OpenCertificateDirCommand = ReactiveCommand.Create(() =>
             {
-                hostsFileService = IHostsFileService.Instance;
-                SetupCertificateCommand = ReactiveCommand.Create(SetupCertificate_OnClick);
-                DeleteCertificateCommand = ReactiveCommand.Create(DeleteCertificate_OnClick);
-                EditHostsFileCommand = ReactiveCommand.Create(hostsFileService.OpenFile);
-                OpenHostsDirCommand = ReactiveCommand.Create(hostsFileService.OpenFileDir);
-                ResetHostsFileCommand = ReactiveCommand.Create(hostsFileService.ResetFile);
-                NetworkFixCommand = ReactiveCommand.Create(ProxyService.Current.FixNetwork);
-                TrustCerCommand = ReactiveCommand.Create(TrustCer_OnClick);
-                OpenCertificateDirCommand = ReactiveCommand.Create(() =>
-                {
-                    reverseProxyService.CertificateManager.GetCerFilePathGeneratedWhenNoFileExists();
-                    platformService.OpenFolder(reverseProxyService.CertificateManager.PfxFilePath);
-                });
-                RefreshCommand = ReactiveCommand.Create(RefreshButton_Click);
-            }
+                reverseProxyService.CertificateManager.GetCerFilePathGeneratedWhenNoFileExists();
+                platformService.OpenFolder(reverseProxyService.CertificateManager.PfxFilePath);
+            });
+            RefreshCommand = ReactiveCommand.Create(RefreshButton_Click);
 
             //AutoRunProxyCommand = ReactiveCommand.Create(() =>
             //{
@@ -118,10 +114,6 @@ namespace System.Application.UI.ViewModels
             //    //},
             //};
 
-            //if (OperatingSystem2.IsMacOS())
-            //{
-            //    MenuItems.Add(new MenuItemViewModel(nameof(AppResources.CommunityFix_CertificateTrust)) { IconKey = "RefreshDrawing", Command = TrustCerCommand });
-            //}
             //AutoRunProxy?.CheckmarkChange(ProxySettings.ProgramStartupRunProxy.Value);
         }
 
@@ -172,26 +164,10 @@ namespace System.Application.UI.ViewModels
             reverseProxyService.CertificateManager.DeleteRootCertificate();
         }
 
-        static string FormatHexString(string? hexString)
-        {
-            if (hexString == null) return string.Empty;
-            StringBuilder builder = new();
-            for (int i = 0; i < hexString.Length; i++)
-            {
-                builder.Append(hexString[i]);
-                if (i != hexString.Length - 1 && i % 2 != 0)
-                {
-                    builder.Append(':');
-                }
-            }
-            return builder.ToString();
-        }
-
         public string? GetCertHashString(HashAlgorithmName name, bool noHeader = false)
         {
             var cert = RootCertificate;
             var value = cert?.GetCertHashStringCompat(name);
-            if (OperatingSystem2.IsAndroid()) value = FormatHexString(value);
             return noHeader ? value : $"{name}：{Environment.NewLine}{value}";
         }
 
@@ -199,7 +175,6 @@ namespace System.Application.UI.ViewModels
         {
             var cert = RootCertificate;
             var value = cert?.SerialNumber;
-            if (OperatingSystem2.IsAndroid()) value = FormatHexString(value);
             return noHeader ? value : $"SerialNumber：{Environment.NewLine}{value}";
         }
 

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>$(MSBuildProjectDirectory)\..\..\avalonia.snk</AssemblyOriginatorKeyFile>
@@ -21,11 +21,6 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Win32" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" !$(TargetFramework.Contains('-windows')) ">
-    <PackageReference Include="Avalonia.X11" />
-    <PackageReference Include="Avalonia.Native" />
   </ItemGroup>
 
 </Project>

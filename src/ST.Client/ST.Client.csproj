@@ -1,14 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>System.Application</RootNamespace>
     <DefineConstants>ORM_SQLITE_PCL;$(DefineConstants)</DefineConstants>
     <AssemblyName>System.Application.SteamTools.Client</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" $(TargetFramework.Contains('-android')) ">
-    <DefineConstants>EXCLUDE_ASF;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,11 +40,7 @@
     <PackageReference Include="Ae.DNS.Client" />
     <!--<PackageReference Include="Ae.Dns.Protocol" />-->
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="JustArchiNET.Madness" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" !$(TargetFramework.Contains('-android')) ">
+  <ItemGroup>
     <ProjectReference Include="..\..\references\ArchiSteamFarm\ArchiSteamFarm.Library\ArchiSteamFarm.Library.csproj" />
   </ItemGroup>
 

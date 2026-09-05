@@ -37,8 +37,6 @@ namespace System.Application.Services.CloudService
 
         public IDonateRankingClient DonateRanking { get; }
 
-        public IAdvertisementClient Advertisement { get; }
-
         #endregion
 
         readonly IApiConnection connection;
@@ -95,7 +93,6 @@ namespace System.Application.Services.CloudService
             Script = new ScriptClient(connection);
             DonateRanking = new DonateRankingClient(connection);
             Notice = new NoticeClient(connection);
-            Advertisement = new AdvertisementClient(connection);
             #endregion
         }
 

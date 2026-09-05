@@ -114,11 +114,6 @@
 
       <DockPanel>
 
-        <controls:AdDialog DockPanel.Dock="Right"
-                           Margin="10 0 10 10"
-                           Standard="Vertical"
-                           Width="200"/>
-
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                       Padding="0 0 0 10">
           <ItemsRepeater Items="{Binding ProxyScripts}">

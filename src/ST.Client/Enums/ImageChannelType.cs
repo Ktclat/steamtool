@@ -51,10 +51,6 @@ namespace System.Application
         /// </summary>
         NoticePicture,
 
-        /// <summary>
-        /// 广告图片
-        /// </summary>
-        Advertisement,
     }
 }
 

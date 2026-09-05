@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using System.Application.Services;
 
@@ -26,14 +25,11 @@ namespace System.Application.UI.Views.Controls
         public static bool GetIsVisible()
         {
 #pragma warning disable CA1416 // 验证平台兼容性
-            if (OperatingSystem2.IsWindows())
+            if (OperatingSystem2.IsWindows7())
             {
-                if (OperatingSystem2.IsWindows7())
+                if (!IPlatformService.Instance.DwmIsCompositionEnabled)
                 {
-                    if (!IPlatformService.Instance.DwmIsCompositionEnabled)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 #pragma warning restore CA1416 // 验证平台兼容性
@@ -49,14 +45,6 @@ namespace System.Application.UI.Views.Controls
                 IsVisible = false;
                 return;
             }
-
-#pragma warning disable CA1416 // 验证平台兼容性
-            if (OperatingSystem2.IsMacOS())
-            {
-                var title = this.FindControl<StackPanel>("title");
-                title.HorizontalAlignment = HorizontalAlignment.Center;
-            }
-#pragma warning restore CA1416 // 验证平台兼容性
 
             var back = this.FindControl<ExperimentalAcrylicBorder>("Back");
 

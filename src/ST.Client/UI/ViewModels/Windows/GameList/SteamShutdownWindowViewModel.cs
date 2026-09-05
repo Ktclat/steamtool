@@ -37,8 +37,7 @@ namespace System.Application.UI.ViewModels
 
             var modes = new List<SystemEndMode>();
             modes.Add(SystemEndMode.Sleep);
-            if (!OperatingSystem2.IsMacOS())
-                modes.Add(SystemEndMode.Hibernate);
+            modes.Add(SystemEndMode.Hibernate);
             modes.Add(SystemEndMode.Shutdown);
 
             SystemEndModes = modes;

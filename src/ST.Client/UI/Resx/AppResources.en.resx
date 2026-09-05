@@ -3040,14 +3040,6 @@ The system will {1} after {0} seconds.</value>
     <value>Download {0} successful</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
-  <data name="Advertisement" xml:space="preserve">
-    <value>ad</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_Close" xml:space="preserve">
-    <value>Turn off ads</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
   <data name="Sign" xml:space="preserve">
     <value>sign in</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
@@ -3090,14 +3082,6 @@ The system will {1} after {0} seconds.</value>
   </data>
   <data name="User_Experience" xml:space="preserve">
     <value>Experience points</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow" xml:space="preserve">
-    <value>Turn off all ads within the program</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow_Tip" xml:space="preserve">
-    <value>Only sponsored users can set it</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
   <data name="SeeDetails" xml:space="preserve">

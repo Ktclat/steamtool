@@ -33,10 +33,6 @@ namespace System.Application.UI.Views
 
         void IApplicationSplashScreen.RunTasks()
         {
-            if (IApplication.IsDesktopPlatform)
-            {
-                AdvertiseService.Current.InitAdvertise();
-            }
         }
     }
 
@@ -51,7 +47,6 @@ namespace System.Application.UI.Views
             InitializeComponent();
             SplashScreen = new AppSplashScreen();
 
-#if WINDOWS
             //var wp = this.FindControl<WallpaperControl>("DesktopBackground");
             var panel = this.FindControl<Panel>("Panel");
             var wp = new WallpaperControl();
@@ -63,7 +58,6 @@ namespace System.Application.UI.Views
             });
             panel.Children.Insert(0, wp);
             _backHandle = wp.Handle;
-#endif
 
 #if DEBUG
             this.AttachDevTools();
@@ -76,7 +70,7 @@ namespace System.Application.UI.Views
         protected override void OnClosing(CancelEventArgs e)
         {
 #if !UI_DEMO
-            if (OperatingSystem2.IsWindows() && StartupOptions.Value.HasNotifyIcon)
+            if (StartupOptions.Value.HasNotifyIcon)
             {
                 IsHideWindow = true;
                 e.Cancel = true;
@@ -88,24 +82,6 @@ namespace System.Application.UI.Views
             }
 #endif
             base.OnClosing(e);
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-#if !UI_DEMO
-            if (!OperatingSystem2.IsWindows() && StartupOptions.Value.HasNotifyIcon)
-            {
-                if (App.Current!.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    desktop.MainWindow = App.Instance.MainWindow = null;
-                }
-
-                if (ViewModel is not null)
-                    foreach (var tab in ViewModel.TabItems)
-                        tab.Deactivation();
-            }
-#endif
-            base.OnClosed(e);
         }
 
         protected override void OnOpened(EventArgs e)

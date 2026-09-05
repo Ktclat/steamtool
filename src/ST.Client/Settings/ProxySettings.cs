@@ -141,23 +141,10 @@ public sealed partial class ProxySettings : SettingsHost2<ProxySettings>
 
     static IEnumerable<EProxyMode> GetProxyModes()
     {
-        if (OperatingSystem2.IsWindows())
-        {
-            yield return EProxyMode.Hosts;
-            yield return EProxyMode.DNSIntercept;
-            yield return EProxyMode.PAC;
-            yield return EProxyMode.System;
-        }
-        else if (OperatingSystem2.IsAndroid())
-        {
-            yield return EProxyMode.VPN;
-            yield return EProxyMode.ProxyOnly;
-        }
-        else if (OperatingSystem2.IsLinux() || OperatingSystem2.IsMacOS())
-        {
-            yield return EProxyMode.Hosts;
-            yield return EProxyMode.System;
-        }
+        yield return EProxyMode.Hosts;
+        yield return EProxyMode.DNSIntercept;
+        yield return EProxyMode.PAC;
+        yield return EProxyMode.System;
     }
 
     public static IReadOnlyList<EProxyMode> ProxyModes => mProxyModes.Value;

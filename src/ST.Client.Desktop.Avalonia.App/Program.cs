@@ -12,17 +12,11 @@ using Avalonia.ReactiveUI;
 using Avalonia.Controls;
 using System.Net.Http;
 
-#if WINDOWS || WINDOWS_DESKTOP_BRIDGE
 using WPFMessageBox = System.Windows.MessageBox;
 using WPFMessageBoxButton = System.Windows.MessageBoxButton;
 using WPFMessageBoxImage = System.Windows.MessageBoxImage;
-#endif
 
-#if MAC
-[assembly: SupportedOSPlatform("macOS")]
-#elif LINUX
-[assembly: SupportedOSPlatform("Linux")]
-#elif WINDOWS_DESKTOP_BRIDGE
+#if WINDOWS_DESKTOP_BRIDGE
 //using Microsoft.Toolkit.Uwp.Notifications;
 #pragma warning disable SA1516 // Elements should be separated by blank line
 #if DEBUG && !MSIX_SINGLE_PROJECT
@@ -30,7 +24,7 @@ using WinFormsMessageBox = System.Windows.Forms.MessageBox;
 #endif
 [assembly: SupportedOSPlatform("Windows10.0.17763.0")]
 #pragma warning restore SA1516 // Elements should be separated by blank line
-#elif WINDOWS
+#else
 [assembly: SupportedOSPlatform("Windows7.0")]
 #endif
 
@@ -48,14 +42,12 @@ namespace System.Application.UI
             // fix The request was aborted: Could not create SSL/TLS secure channel
             TrySetSecurityProtocol();
 
-#if WINDOWS || WINDOWS_DESKTOP_BRIDGE
             HttpClient.DefaultProxy = DynamicHttpWindowsProxy.Instance;
-#endif
 
 #if WINDOWS_DESKTOP_BRIDGE
             if (!DesktopBridgeHelper.Init()) return 0;
             InitWithUWP(ref args);
-#elif WINDOWS
+#else
             //#if NET7_0_OR_GREATER
             //            if (/*Environment.Version >= new Version(7, 0) && */!OperatingSystem2.IsWindows10AtLeast())
             //            {
@@ -81,8 +73,6 @@ namespace System.Application.UI
                 WPFMessageBox.Show(AppResources.Error_BaseDir_StartsWith_Temp, AppResources.Error, WPFMessageBoxButton.OK, WPFMessageBoxImage.Error);
                 return 0;
             }
-#elif MAC
-            InitWithMAC(args);
 #endif
             var host = ProgramHost.Instance;
             host.IsMainProcess = args.Length == 0;
@@ -112,7 +102,7 @@ namespace System.Application.UI
             }
             finally
             {
-                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                // Ensure to flush and stop internal timers/threads before application exit.
                 PlatformApp?.Dispose();
                 DI.Dispose();
                 LogManager.Shutdown();
@@ -178,11 +168,6 @@ namespace System.Application.UI
         //        }
         //    }
         //}
-#elif MAC
-        static void InitWithMAC(string[] args)
-        {
-            AppDelegate.Init(args);
-        }
 #endif
 
         //static void InitCefNetApp(string[] args) => CefNetApp.Init(AppHelper.LogDirPath, args);
@@ -208,17 +193,6 @@ namespace System.Application.UI
 
             var useGpu = !IApplication.DisableGPU && GeneralSettings.UseGPURendering.Value;
 
-#if MAC
-            builder.With(new AvaloniaNativePlatformOptions
-            {
-                UseGpu = useGpu
-            });
-#elif LINUX
-            builder.With(new X11PlatformOptions
-            {
-                UseGpu = useGpu
-            });
-#elif WINDOWS
             var useWgl = IApplication.UseWgl || GeneralSettings.UseWgl.Value;
             var options = new Win32PlatformOptions
             {
@@ -233,9 +207,6 @@ namespace System.Application.UI
             };
 
             builder.With(skiaOptions);
-#else
-            throw new PlatformNotSupportedException();
-#endif
 
             return builder;
         }

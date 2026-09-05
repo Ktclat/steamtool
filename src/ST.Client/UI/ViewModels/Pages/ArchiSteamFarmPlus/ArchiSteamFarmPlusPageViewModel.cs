@@ -32,45 +32,19 @@ namespace System.Application.UI.ViewModels
         {
             SelectBotFiles = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[]
-                    {
-                        ("Json Files", new[] { FileEx.JSON, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else if (OperatingSystem2.IsAndroid())
-                {
-                    fileTypes = new[] { MediaTypeNames.JSON };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("Json Files", new[] { FileEx.JSON, }),
+                };
                 await PickMultipleAsync(ASFService.Current.ImportBotFiles, fileTypes);
             });
 
             SelectGlobalFiles = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[]
-                    {
-                        ("Json Files", new[] { FileEx.JSON, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else if (OperatingSystem2.IsAndroid())
-                {
-                    fileTypes = new[] { MediaTypeNames.JSON };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("Json Files", new[] { FileEx.JSON, }),
+                };
                 await PickAsync(ASFService.Current.ImportGlobalFiles, fileTypes);
             });
 

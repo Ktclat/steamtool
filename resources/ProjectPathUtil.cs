@@ -12,7 +12,6 @@ public static partial class ProjectPathUtil
     public const string ProjectDir_AvaloniaApp = "ST.Client.Desktop.Avalonia.App";
     public const string ProjectDir_Win7Troubleshoot = "ST.Tools.Win7Troubleshoot";
     public const string ProjectDir_CoreLib = "Common.CoreLib";
-    public const string ProjectDir_ClienDroidLib = "Common.ClientLib.Droid";
     public const string ProjectDir_ClientDesktop = "ST.Client.Desktop";
     public const string ProjectDir_ST = "ST";
     public const string ProjectDir_STClient = "ST.Client";
@@ -27,13 +26,6 @@ public static partial class ProjectPathUtil
     public const string MainDllPath_ =
         @"\src\" + ProjectDir_AvaloniaApp + @"\bin\{0}\Steam++.dll";
 
-    [Obsolete("use DirPublishWinX86_")]
-    public const string DirPublishWinX86 =
-        @"\src\" + ProjectDir_AvaloniaApp + @"\bin\Release\Publish\win-x86";
-
-    public const string DirPublishWinX86_ =
-        @"\src\" + ProjectDir_AvaloniaApp + @"\bin\{0}\Publish\win-x86";
-
     [Obsolete("use DirPublishWinX64_", true)]
     public const string DirPublishWinX64 =
         @"\src\" + ProjectDir_AvaloniaApp + @"\bin\Release\Publish\win-x64";
@@ -44,9 +36,6 @@ public static partial class ProjectPathUtil
 
     public const string DirPublishWinX64_ =
         @"\src\" + ProjectDir_AvaloniaApp + @"\bin\{0}\Publish\win-x64";
-
-    public const string DirPublishOsx =
-       @"\src\" + ProjectDir_AvaloniaApp + @"\bin\Release\Publish\{0}";
 
     public const string DirPublishWinX64_FDE_ =
         @"\src\" + ProjectDir_AvaloniaApp + @"\bin\{0}\Publish\FrameworkDependent\win-x64";

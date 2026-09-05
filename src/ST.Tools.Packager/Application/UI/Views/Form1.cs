@@ -12,7 +12,7 @@ namespace System.Application.UI.Views
     /// </summary>
     public partial class Form1 : Form
     {
-        readonly string app_path = DirPublishWinX86;
+        readonly string app_path = string.Format(DirPublishWinX64_, "Release");
 
         static string GetPath(string path)
         {

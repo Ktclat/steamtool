@@ -3045,14 +3045,6 @@ AAAAA-BBBBB-CCCC3</value>
     <value>다운로드 {0} 성공했습니다</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
-  <data name="Advertisement" xml:space="preserve">
-    <value>광고</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_Close" xml:space="preserve">
-    <value>광고를 끕니다</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
   <data name="Sign" xml:space="preserve">
     <value>체크인</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
@@ -3095,14 +3087,6 @@ AAAAA-BBBBB-CCCC3</value>
   </data>
   <data name="User_Experience" xml:space="preserve">
     <value>경험치</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow" xml:space="preserve">
-    <value>프로그램 내 모든 광고를 닫습니다</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow_Tip" xml:space="preserve">
-    <value>스폰서 사용자만 설정할 수 있습니다</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
   <data name="SeeDetails" xml:space="preserve">

@@ -210,11 +210,7 @@ namespace System.Application.UI.ViewModels
         public static async Task StartAsync(WindowViewModel vm, FastLoginChannel channel, bool isBind)
         {
             var app = IApplication.Instance;
-            if (!OperatingSystem2.IsAndroid() && !OperatingSystem2.IsIOS())
-            {
-                // Android/iOS 使用 URL Scheme 回调
-                StartServer(app);
-            }
+            StartServer(app);
             var conn_helper = DI.Get<IApiConnectionPlatformHelper>();
             var apiBaseUrl = ICloudServiceClient.Instance.ApiBaseUrl;
 #if DEBUG

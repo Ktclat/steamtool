@@ -1,11 +1,5 @@
 using System.Globalization;
-#if AVALONIA
 using _IValueConverter = Avalonia.Data.Converters.IValueConverter;
-#elif MAUI
-using _IValueConverter = Microsoft.Maui.Controls.IValueConverter;
-#elif __MOBILE__
-using _IValueConverter = Xamarin.Forms.IValueConverter;
-#endif
 using BaseType = System.Application.Converters.Abstractions.IValueConverter;
 
 namespace System.Application.Converters;

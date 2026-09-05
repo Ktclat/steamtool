@@ -1,17 +1,9 @@
 using System.Application.CommandLine;
 using System.Application.Services;
-#if MAUI
-using Program = System.Application.UI.MauiProgram;
-#endif
 
 namespace System.Application.UI;
 
-static partial class
-#if MAUI
-    MauiProgram
-#else
-    Program
-#endif
+static partial class Program
 {
     private sealed partial class ProgramHost
     {
@@ -41,13 +33,11 @@ static partial class
 
         public void InitVisualStudioAppCenterSDK()
         {
-#if !MAUI && (WINDOWS || XAMARIN_MAC || __MOBILE__ || __ANDROID__ || __IOS__ || MACCATALYST || IOS)
 #pragma warning disable IDE0079 // 请删除不必要的忽略
 #pragma warning disable CA1416 // 验证平台兼容性
             VisualStudioAppCenterSDK.Init();
 #pragma warning restore CA1416 // 验证平台兼容性
 #pragma warning restore IDE0079 // 请删除不必要的忽略
-#endif
         }
 
         public void OnStartup() => Program.OnStartup(this);
@@ -88,12 +78,7 @@ static partial class
             => StartWatchTrace.Record(mark, dispose);
 #endif
 
-        protected override void StartApplication(string[] args) =>
-#if MAUI
-            StartMauiApp(args);
-#else
-            StartAvaloniaApp(args);
-#endif
+        protected override void StartApplication(string[] args) => StartAvaloniaApp(args);
 
         public override IApplication? Application => App.Instance;
 

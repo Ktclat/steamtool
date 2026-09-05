@@ -28,72 +28,36 @@ namespace System.Application.UI.ViewModels
 
             SppV2Btn_Click = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[] {
-                        ("MsgPack Files", new[] { FileEx.MPO, }),
-                        ("Data Files", new[] { FileEx.DAT, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("MsgPack Files", new[] { FileEx.MPO, }),
+                    ("Data Files", new[] { FileEx.DAT, }),
+                };
                 await PickAsync(ImportSteamPlusPlusV2, fileTypes);
             });
             SppBtn_Click = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[] {
-                        ("Data Files", new[] { FileEx.DAT, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("Data Files", new[] { FileEx.DAT, }),
+                };
                 await PickAsync(ImportSteamPlusPlusV1, fileTypes);
             });
             SdaBtn_Click = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[] {
-                        ("MaFile Files", new[] { FileEx.maFile }),
-                        ("Json Files", new[] { FileEx.JSON, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("MaFile Files", new[] { FileEx.maFile }),
+                    ("Json Files", new[] { FileEx.JSON, }),
+                };
                 await PickAsync(ImportSDA, fileTypes);
             });
             WinAuthBtn_Click = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[] {
-                        ("Text Files", new[] { FileEx.TXT }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else if (OperatingSystem2.IsAndroid())
-                {
-                    fileTypes = new[] { MediaTypeNames.TXT };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("Text Files", new[] { FileEx.TXT }),
+                };
                 await PickAsync(ImportWinAuth, fileTypes);
             });
 

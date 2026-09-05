@@ -219,11 +219,6 @@
 
       <DockPanel Grid.Column="1" Grid.Row="1" Classes="paper" Margin="0 0 10 10">
 
-        <controls:AdDialog DockPanel.Dock="Bottom"
-                           Margin="0 10 0 0"
-                           Standard="Horizontal"
-                           Height="160"/>
-
         <Border Grid.Column="1" Grid.Row="1" Classes="paper" Background="{DynamicResource ThemeBrushKey}">
           <Panel Margin="10 0">
             <DockPanel>
@@ -319,11 +314,6 @@
 
       <DockPanel Grid.Row="1"
                  Margin="50 10">
-        <controls:AdDialog DockPanel.Dock="Right"
-                           Margin="10 0 0 0"
-                           Standard="Vertical"
-                           Width="164"/>
-
         <TabControl TabStripPlacement="Top"
                 Classes="flat"
                 HorizontalAlignment="Stretch">
@@ -388,9 +378,6 @@
           <!--<TabItem Header="加速日志">
 
             </TabItem>-->
-          <!--<TabItem Header="AD">
-            <controls:AdDialog />
-          </TabItem>-->
         </TabControl>
       </DockPanel>
 

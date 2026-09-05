@@ -2,14 +2,10 @@
 #pragma warning disable SA1211 // Using alias directives should be ordered alphabetically by alias name
 #pragma warning disable SA1216 // Using static directives should be placed at the correct location
 #pragma warning disable SA1209 // Using alias directives should be placed after other using directives
-#if !MAUI
-#if !__MOBILE__ && !CONSOLEAPP
+#if !CONSOLEAPP
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
-#else
-using Xamarin.Essentials;
-#endif
 #endif
 #if UI_DEMO
 using Moq;
@@ -34,33 +30,10 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Application.Settings;
 using System.Threading.Tasks;
-#if __ANDROID__
-using System.Application.UI.Resx;
-using System.Windows;
-using Microsoft.Extensions.Http;
-using Xamarin.Android.Net;
-using Program = System.Application.UI.MainApplication;
-using PlatformApplication = System.Application.UI.MainApplication;
-#elif __IOS__
-using Program = System.Application.UI.AppDelegate;
-#elif !__MOBILE__
 using ReactiveUI;
 using System.Reactive;
-#endif
-#if !MAUI && !__MOBILE__
 using AvaloniaApplication = Avalonia.Application;
-#endif
-#if __ANDROID__ && !MAUI
-#else
 using PlatformApplication = System.Application.UI.App;
-#endif
-#if ANDROID || IOS || __ANDROID__
-#if MAUI
-using EssentialsFileSystem = Microsoft.Maui.Storage.FileSystem;
-#else
-using EssentialsFileSystem = Xamarin.Essentials.FileSystem;
-#endif
-#endif
 using static System.Common.Constants;
 using _ThisAssembly = System.Properties.ThisAssembly;
 using _UserService = System.Application.Services.UserService;
@@ -78,16 +51,7 @@ using CreateHttpHandlerArgs = System.ValueTuple<
 
 namespace System.Application.UI
 {
-    partial class
-#if MAUI
-        MauiProgram
-#elif __ANDROID__
-        MainApplication
-#elif __IOS__
-        Program
-#elif !__MOBILE__
-        Program
-#endif
+    partial class Program
     {
         #region AppSettings
 
@@ -220,44 +184,26 @@ namespace System.Application.UI
         /// <param name="services"></param>
         static void ConfigureRequiredServices(IServiceCollection services, IApplication.IStartupArgs args, StartupOptions options, bool isTrace = false)
         {
-#if !__ANDROID__ || MAUI
             services.AddSingleton(ProgramHost.Instance);
-#endif
 #if !UI_DEMO
-#if WINDOWS && !WINDOWS_DESKTOP_BRIDGE
+#if !WINDOWS_DESKTOP_BRIDGE
             services.AddScheduledTaskService();
 #endif
             // 平台服务 此项放在其他通用业务实现服务之前
             services.AddPlatformService(options);
 #endif
-#if WINDOWS
-#if !MAUI
             services.AddMSAppCenterApplicationSettings();
-#endif
             services.AddJumpListService();
-#endif
 
             // 添加日志实现
             services.AddGeneralLogging();
-#if MAUI || __MOBILE__ || ANDROID || IOS || __ANDROID__
-            services.TryAddEssentials();
-#endif
-#if __MOBILE__ || ANDROID || IOS || __ANDROID__
-            // 添加运行时权限
-            services.AddPlatformPermissions();
-#endif
 #if !CONSOLEAPP
             // 添加 app 配置项
             services.TryAddOptions(GetAppSettings(isTrace));
-#if MAUI || __MOBILE__ || ANDROID || IOS || __ANDROID__
-            // 键值对存储 - 由 Essentials 提供
-            services.TryAddEssentialsSecureStorage();
-#else
             // 键值对存储 - 由 Repository 提供
             services.TryAddRepositorySecureStorage();
             // 首选项(Preferences) - 由 Repository 提供
             services.AddRepositoryPreferences();
-#endif
 
             // 添加安全服务
             services.AddSecurityService<EmbeddedAesDataProtectionProvider, LocalDataProtectionProvider>();
@@ -291,11 +237,7 @@ namespace System.Application.UI
             if (options.HasGUI)
             {
                 services.AddPinyin();
-#if __MOBILE__ || MAUI
-                services.TryAddFontManager();
-#else
                 services.TryAddAvaloniaFontManager(useGdiPlusFirst: true);
-#endif
                 // 添加 Toast 提示服务
 #if !DEBUG
                 services.AddStartupToastIntercept();
@@ -305,14 +247,6 @@ namespace System.Application.UI
                 services.AddSingleton(_ => PlatformApplication.Instance);
 
                 services.AddSingleton<IApplication>(s => s.GetRequiredService<PlatformApplication>());
-#if __ANDROID__
-                services.AddSingleton<IAndroidApplication>(s => s.GetRequiredService<PlatformApplication>());
-#endif
-#if __MOBILE__
-                //services.AddMSALPublicClientApp(AppSettings.MASLClientId);
-#elif MAUI
-                services.AddSingleton<IMauiApplication>(s => s.GetRequiredService<PlatformApplication>());
-#else
                 services.AddSingleton<IAvaloniaApplication>(s => s.GetRequiredService<PlatformApplication>());
                 services.TryAddSingleton<IClipboardPlatformService>(s => s.GetRequiredService<PlatformApplication>());
 
@@ -320,7 +254,6 @@ namespace System.Application.UI
                 services.AddMainThreadPlatformService();
 
                 services.TryAddAvaloniaFilePickerPlatformService();
-#endif
                 #region MessageBox
 
                 /* System.Windows.MessageBox 在 WPF 库中，仅支持 Win 平台
@@ -342,10 +275,8 @@ namespace System.Application.UI
                  */
                 services.TryAddWindowManager();
 
-#if WINDOWS
                 // 可选项，在 Win 平台使用 WPF 实现的 MessageBox
                 //services.AddSingleton<IMessageBoxCompatService, WPFMessageBoxCompatService>();
-#endif
 
                 #endregion
 
@@ -369,10 +300,6 @@ namespace System.Application.UI
 
             if (options.HasHttpClientFactory)
             {
-#if __MOBILE__
-                // 添加 HttpClientFactory 平台原生实现
-                services.AddNativeHttpClient();
-#endif
                 // 通用 Http 服务
                 services.AddHttpService();
                 if (isTrace) StartWatchTrace.Record("DI.D.HttpClientFactory");
@@ -419,9 +346,7 @@ namespace System.Application.UI
             if (isTrace) StartWatchTrace.Record("DI.D.AddNotificationService");
             void AddNotificationService()
             {
-#if !__MOBILE__
                 if (!args.IsMainProcess) return;
-#endif
                 services.TryAddNotificationService();
             }
 #endif
@@ -435,13 +360,11 @@ namespace System.Application.UI
 #endif
             if (options.HasSteam)
             {
-#if !__ANDROID__
                 // Steam 相关助手、工具类服务
                 services.AddSteamService();
 
                 // Steamworks LocalApi Service
                 services.TryAddSteamworksLocalApiService();
-#endif
 
                 // SteamDb WebApi Service
                 //services.AddSteamDbWebApiService();
@@ -460,11 +383,7 @@ namespace System.Application.UI
             if (options.HasMainProcessRequired)
             {
                 // 应用程序更新服务
-#if !MAUI
                 services.AddApplicationUpdateService();
-#else
-                Console.WriteLine("TODO: AddApplicationUpdateService");
-#endif
                 if (isTrace) StartWatchTrace.Record("DI.D.AppUpdateService");
             }
 #endif
@@ -519,28 +438,13 @@ namespace System.Application.UI
         /// <param name="isTrace"></param>
         static void OnCreateAppExecuting(bool isTrace = false)
         {
-            bool isDesignMode =
-#if !(__MOBILE__ || MAUI)
-                Design.IsDesignMode;
-#else
-                false;
-#endif
+            bool isDesignMode = Design.IsDesignMode;
 
             if (isTrace) StartWatchTrace.Record();
             try
             {
 #if !WINDOWS_DESKTOP_BRIDGE
-#if MAC
-                FileSystemDesktopMac.InitFileSystem();
-#elif LINUX
-                FileSystemDesktopXDG.InitFileSystem();
-#elif WINDOWS
                 FileSystemDesktopWindows.InitFileSystem();
-#elif ANDROID || IOS || __ANDROID__
-                FileSystemEssentials.InitFileSystem();
-#else
-                FileSystem2.InitFileSystem();
-#endif
                 if (isTrace) StartWatchTrace.Record("FileSystem");
 
                 if (isTrace) StartWatchTrace.Record();
@@ -650,31 +554,16 @@ namespace System.Application.UI
                         await userService.SaveUserAsync(rspRUserInfo.Content);
                     }
                 }
-#if !__MOBILE__ && !MAUI
                 var screens = PlatformApplication.Instance.MainWindow!.Screens;
-#else
-                var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
-                var mainDisplayInfoH = mainDisplayInfo.Height.ToInt32(NumberToInt32Format.Ceiling);
-                var mainDisplayInfoW = mainDisplayInfo.Width.ToInt32(NumberToInt32Format.Ceiling);
-#endif
                 var req = new ActiveUserRecordDTO
                 {
                     Type = type,
-#if __MOBILE__ || MAUI
-                    ScreenCount = 1,
-                    PrimaryScreenPixelDensity = mainDisplayInfo.Density,
-                    PrimaryScreenWidth = mainDisplayInfoW,
-                    PrimaryScreenHeight = mainDisplayInfoH,
-                    SumScreenWidth = mainDisplayInfoW,
-                    SumScreenHeight = mainDisplayInfoH,
-#else
                     ScreenCount = screens.ScreenCount,
                     PrimaryScreenPixelDensity = screens.Primary.PixelDensity,
                     PrimaryScreenWidth = screens.Primary.Bounds.Width,
                     PrimaryScreenHeight = screens.Primary.Bounds.Height,
                     SumScreenWidth = screens.All.Sum(x => x.Bounds.Width),
                     SumScreenHeight = screens.All.Sum(x => x.Bounds.Height),
-#endif
                     IsAuthenticated = isAuthenticated,
                 };
                 req.SetDeviceId();
@@ -706,37 +595,11 @@ namespace System.Application.UI
 
             static Logger? Logger => _logger.Value;
 
-#if __ANDROID__
-            sealed class UncaughtExceptionHandler : Java.Lang.Object, Java.Lang.Thread.IUncaughtExceptionHandler
-            {
-                readonly Action<Java.Lang.Thread, Java.Lang.Throwable> action;
-                readonly Java.Lang.Thread.IUncaughtExceptionHandler? @interface;
-
-                public UncaughtExceptionHandler(Action<Java.Lang.Thread, Java.Lang.Throwable> action, Java.Lang.Thread.IUncaughtExceptionHandler? @interface = null)
-                {
-                    this.action = action;
-                    this.@interface = @interface;
-                }
-
-                public void UncaughtException(Java.Lang.Thread t, Java.Lang.Throwable e)
-                {
-                    @interface?.UncaughtException(t, e);
-                    action(t, e);
-                }
-            }
-#endif
-
             /// <summary>
             /// 初始化全局异常处理
             /// </summary>
             public static void Init()
             {
-#if __ANDROID__
-                Java.Lang.Thread.DefaultUncaughtExceptionHandler = new UncaughtExceptionHandler((_, ex) =>
-                {
-                    Handler(ex, nameof(Java));
-                }, Java.Lang.Thread.DefaultUncaughtExceptionHandler);
-#else
                 AppDomain.CurrentDomain.UnhandledException += (_, e) =>
                 {
                     if (e.ExceptionObject is Exception ex)
@@ -749,7 +612,6 @@ namespace System.Application.UI
                     // https://github.com/AvaloniaUI/Avalonia/issues/5290#issuecomment-760751036
                     Handler(ex, nameof(RxApp));
                 });
-#endif
             }
 
             /// <summary>
@@ -769,7 +631,6 @@ namespace System.Application.UI
                 // NLog: catch any exception and log it.
                 Logger?.Error(ex, "Stopped program because of exception, name: {1}, isTerminating: {0}", isTerminating, name);
 
-#if !__MOBILE__
                 try
                 {
                     DI.Get_Nullable<IReverseProxyService>()?.StopProxy();
@@ -779,25 +640,8 @@ namespace System.Application.UI
                 {
                     Logger?.Error(ex_restore_hosts, "(App)Close exception when OnExitRestoreHosts");
                 }
-#endif
             }
         }
-
-        #endregion
-
-        #region FileSystemEssentials
-
-#if ANDROID || IOS || __ANDROID__
-        sealed class FileSystemEssentials : IOPath.FileSystemBase
-        {
-            public static void InitFileSystem()
-            {
-                InitFileSystem(GetAppDataDirectory, GetCacheDirectory);
-                string GetAppDataDirectory() => EssentialsFileSystem.AppDataDirectory;
-                string GetCacheDirectory() => EssentialsFileSystem.CacheDirectory;
-            }
-        }
-#endif
 
         #endregion
 
@@ -809,8 +653,6 @@ namespace System.Application.UI
         /// <returns></returns>
         static Func<HttpMessageHandler>? ConfigureHandler()
         {
-#if NETCOREAPP2_1_OR_GREATER
-#if WINDOWS
             if (GeneralSettings.UseWinHttpHandler.Value)
             {
                 return () => new WinHttpHandler
@@ -821,7 +663,6 @@ namespace System.Application.UI
                 };
             }
             else
-#endif
             {
                 return () => GeneralHttpClientFactory.CreateSocketsHttpHandler(new()
                 {
@@ -829,15 +670,6 @@ namespace System.Application.UI
                     AutomaticDecompression = DecompressionMethods.Brotli | DecompressionMethods.GZip,
                 });
             }
-#elif __ANDROID__
-            return () => PlatformHttpMessageHandlerBuilder.CreateAndroidClientHandler(new()
-            {
-                UseCookies = false,
-                AutomaticDecompression = DecompressionMethods.GZip,
-            });
-#else
-            return null;
-#endif
         }
 
         /// <summary>
@@ -850,8 +682,6 @@ namespace System.Application.UI
             var proxy = args.Item4;
             var useProxy = GeneralHttpClientFactory.UseWebProxy(proxy);
             var setMaxConnectionsPerServer = !(args.Item5 < 1);  // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/SocketsHttpHandler.cs#L157
-#if NETCOREAPP2_1_OR_GREATER
-#if WINDOWS
             if (GeneralSettings.UseWinHttpHandler.Value)
             {
                 var handler = new WinHttpHandler
@@ -876,7 +706,6 @@ namespace System.Application.UI
                 return handler;
             }
             else
-#endif
             {
                 var handler = GeneralHttpClientFactory.CreateSocketsHttpHandler(new()
                 {
@@ -895,26 +724,6 @@ namespace System.Application.UI
                 }
                 return handler;
             }
-#elif __ANDROID__
-            var handler = PlatformHttpMessageHandlerBuilder.CreateAndroidClientHandler(new()
-            {
-                AllowAutoRedirect = args.Item1,
-                AutomaticDecompression = args.Item2,
-                CookieContainer = args.Item3,
-            });
-            if (useProxy)
-            {
-                handler.Proxy = proxy;
-                handler.UseProxy = true;
-            }
-            if (setMaxConnectionsPerServer)
-            {
-                handler.MaxConnectionsPerServer = args.Item5;
-            }
-            return handler;
-#else
-            return null;
-#endif
         }
 
         // System.Application.Services.Implementation.Http.ReverseProxyHttpClientHandler

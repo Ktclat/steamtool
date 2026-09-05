@@ -273,11 +273,6 @@ public partial class DebugPageViewModel
 
         @string.AppendFormatLine("UserName: {0}", Environment.UserName);
         @string.AppendFormatLine("MachineName: {0}", Environment.MachineName);
-        if (OperatingSystem2.IsLinux())
-        {
-            @string.AppendFormatLine("$HOME: {0}", Environment.GetEnvironmentVariable("HOME"));
-        }
-
         var folders = Enum2.GetAll<Environment.SpecialFolder>()
             .Select(x => (int)x)
             .Distinct()

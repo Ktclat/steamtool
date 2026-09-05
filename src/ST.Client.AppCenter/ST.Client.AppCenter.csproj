@@ -1,13 +1,10 @@
 <Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <!--<TargetFrameworks>MonoAndroid12.0;Xamarin.iOS10;net6.0-android;net6.0-windows</TargetFrameworks>-->
-    <!--<TargetFrameworks>MonoAndroid12.0;Xamarin.iOS10;net6.0-windows</TargetFrameworks>-->
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>System.Application.AppCenter</RootNamespace>
     <AssemblyName>System.Application.SteamTools.Client.AppCenter</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +17,7 @@
     <Compile Include="..\ST\Properties\InternalsVisibleTo.cs">
       <Link>Properties\InternalsVisibleTo.cs</Link>
     </Compile>
-    <Compile Include="..\Common.Essentials.Maui\Properties\AssemblyInfo.OS.cs">
+    <Compile Include="..\ST.Client.Desktop.Windows\Properties\AssemblyInfo.OS.cs">
       <Link>Properties\AssemblyInfo.OS.cs</Link>
     </Compile>
   </ItemGroup>
@@ -36,10 +33,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\ST.Client.Android.ResSecrets\ST.Client.Android.ResSecrets.csproj" Condition=" $(TargetFramework.StartsWith('MonoAndroid')) OR $(TargetFramework.Contains('-android')) " />
-    <ProjectReference Include="..\ST.Client.iOS.ResSecrets\ST.Client.iOS.ResSecrets.csproj" Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) OR $(TargetFramework.Contains('-ios')) " />
-    <ProjectReference Include="..\ST.Client.Mac.ResSecrets\ST.Client.Mac.ResSecrets.csproj" Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) OR $(TargetFramework.Contains('-mac')) " />
-    <ProjectReference Include="..\ST.Client.Windows.ResSecrets\ST.Client.Windows.ResSecrets.csproj" Condition=" $(TargetFramework.Contains('-windows')) " />
+    <ProjectReference Include="..\ST.Client.Windows.ResSecrets\ST.Client.Windows.ResSecrets.csproj" />
     <ProjectReference Include="..\ST.Client\ST.Client.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net6.0</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">net6.0;net6.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <RootNamespace>System</RootNamespace>
     <SignAssembly>false</SignAssembly>
     <!--(SignAssembly)对此程序集进行签名会导致编译失败(CompileAvaloniaXamlTask)-->
@@ -83,9 +82,7 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
     <PackageReference Include="HarfBuzzSharp" />
-    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" />
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.ReactiveUI" />
@@ -108,14 +105,10 @@
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.Contains('-windows')) ">
+  <ItemGroup>
     <PackageReference Include="WebView2.Avalonia" />
   </ItemGroup>
 
-  <ItemGroup Condition=" !$(TargetFramework.Contains('-windows')) ">
-    <ProjectReference Include="..\Avalonia.WebView2\Avalonia.WebView2.csproj" />
-  </ItemGroup>
-
-  <Import Condition=" $(TargetFramework.Contains('-windows')) " Project="..\..\WindowsPlatform.props" />
+  <Import Project="..\..\WindowsPlatform.props" />
 
 </Project>

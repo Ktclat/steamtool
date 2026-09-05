@@ -22,11 +22,6 @@ public sealed partial class UISettings : SettingsHost2<UISettings>
     public static SerializableProperty<HashSet<MessageBox.DontPromptType>?> DoNotShowMessageBoxs { get; }
         = GetProperty<HashSet<MessageBox.DontPromptType>?>(defaultValue: null, autoSave: false);
 
-    /// <summary>
-    /// 是否显示广告
-    /// </summary>
-    public static SerializableProperty<bool> IsShowAdvertise { get; }
-        = GetProperty(defaultValue: true);
 }
 
 //static void EnableDesktopBackground_ValueChanged(object? sender, ValueChangedEventArgs<bool> e)

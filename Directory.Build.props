@@ -8,6 +8,11 @@
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <!-- Keep every Windows-targeted project on the same WinRT projection set. -->
+    <WindowsSdkPackageVersion>10.0.19041.26</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" Exists('$(MSBuildProjectDirectory)\..\..\Unicorn.snk') ">

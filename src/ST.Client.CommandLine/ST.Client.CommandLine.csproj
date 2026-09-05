@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>System.Application.CommandLine</RootNamespace>
     <AssemblyName>System.Application.SteamTools.Client.CommandLine</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>

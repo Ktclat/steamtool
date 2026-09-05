@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Diagnostics;
-using System.Text;
 
 namespace System.Application
 {
@@ -10,7 +9,6 @@ namespace System.Application
     public static class StartWatchTrace
     {
         static Stopwatch? sw;
-        static StringBuilder? sb;
 
         public static void Record(string? mark = null, bool dispose = false)
         {
@@ -23,19 +21,10 @@ namespace System.Application
                     return;
                 }
                 sw.Stop();
-                var isMobile = OperatingSystem2.IsAndroid();
-                if (isMobile)
-                {
-                    sb ??= new();
-                    sb.AppendFormatLine("init {1} {0}ms", sw.ElapsedMilliseconds, mark);
-                }
-                else
-                {
-                    var args = string.Join(" ", Environment.GetCommandLineArgs().Skip(1).Take(1));
-                    var msg = $"{(string.IsNullOrWhiteSpace(args) ? "" : args + " ")}mark: {mark}, value: {sw.ElapsedMilliseconds}";
-                    Debug.WriteLine(msg);
-                    Console.WriteLine(msg);
-                }
+                var args = string.Join(" ", Environment.GetCommandLineArgs().Skip(1).Take(1));
+                var msg = $"{(string.IsNullOrWhiteSpace(args) ? "" : args + " ")}mark: {mark}, value: {sw.ElapsedMilliseconds}";
+                Debug.WriteLine(msg);
+                Console.WriteLine(msg);
                 if (!dispose) sw.Restart();
             }
             else
@@ -44,7 +33,7 @@ namespace System.Application
             }
         }
 
-        public static new string ToString() => sb?.ToString() ?? string.Empty;
+        public static new string ToString() => string.Empty;
 
         public static long ElapsedMilliseconds => sw == null ? 0L : sw.ElapsedMilliseconds;
     }

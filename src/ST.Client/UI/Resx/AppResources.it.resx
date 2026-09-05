@@ -3040,14 +3040,6 @@ Il sistema verrà {1} dopo {0} secondi.</value>
     <value>Download {0} riuscito</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
-  <data name="Advertisement" xml:space="preserve">
-    <value>annuncio</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_Close" xml:space="preserve">
-    <value>Disattivare gli annunci</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
   <data name="Sign" xml:space="preserve">
     <value>Accedi</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
@@ -3090,14 +3082,6 @@ Il sistema verrà {1} dopo {0} secondi.</value>
   </data>
   <data name="User_Experience" xml:space="preserve">
     <value>Punti esperienza</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow" xml:space="preserve">
-    <value>Disattiva tutti gli annunci all&apos;interno del programma</value>
-    <comment>Comment=;Author=MicrosoftTranslator</comment>
-  </data>
-  <data name="Advertisement_NoShow_Tip" xml:space="preserve">
-    <value>Solo gli utenti sponsorizzati possono impostarlo</value>
     <comment>Comment=;Author=MicrosoftTranslator</comment>
   </data>
   <data name="SeeDetails" xml:space="preserve">

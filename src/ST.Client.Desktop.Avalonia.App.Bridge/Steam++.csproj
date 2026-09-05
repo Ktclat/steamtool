@@ -15,7 +15,7 @@
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <PlatformTarget>x64</PlatformTarget>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-    <WindowsSdkPackageVersion>10.0.19041.24</WindowsSdkPackageVersion>
+    <WindowsSdkPackageVersion>10.0.19041.26</WindowsSdkPackageVersion>
     <UseWindowsForms Condition="'$(Configuration)'=='Debug'">true</UseWindowsForms>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
@@ -65,10 +65,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avalonia.Native\Avalonia.Native.csproj" />
     <ProjectReference Include="..\Avalonia.Themes.Default\Avalonia.Themes.Default.csproj" />
     <ProjectReference Include="..\Avalonia.Themes.Fluent\Avalonia.Themes.Fluent.csproj" />
-    <ProjectReference Include="..\Avalonia.X11\Avalonia.X11.csproj" />
     <ProjectReference Include="..\ST.Client.Desktop.Avalonia\ST.Client.Avalonia.csproj" />
     <ProjectReference Include="..\Common.CoreLib\Common.CoreLib.csproj" />
     <ProjectReference Include="..\ST.Client.Desktop.Windows\ST.Client.Windows.csproj" />

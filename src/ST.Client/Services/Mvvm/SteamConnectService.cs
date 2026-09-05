@@ -66,8 +66,6 @@ namespace System.Application.Services
                     if (x)
                     {
                         InitializeDownloadGameList();
-                        if (OperatingSystem2.IsLinux())
-                            IPlatformService.Instance.TryGetSystemUserPassword();
                         stmService.StartWatchSteamDownloading(app =>
                         {
                             var optional = DownloadApps.Lookup(app.AppId);

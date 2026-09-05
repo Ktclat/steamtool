@@ -37,33 +37,15 @@ namespace System.Application.UI.ViewModels
 
         public ProxyScriptManagePageViewModel()
         {
-            if (!IApplication.IsDesktopPlatform)
-            {
-                return;
-            }
-
             ScriptStoreCommand = ReactiveCommand.Create(OpenScriptStoreWindow);
             AllEnableScriptCommand = ReactiveCommand.Create(AllEnableScript);
             AddNewScriptButton_Click = ReactiveCommand.CreateFromTask(async () =>
             {
-                FilePickerFileType? fileTypes;
-                if (IApplication.IsDesktopPlatform)
+                FilePickerFileType fileTypes = new ValueTuple<string, string[]>[]
                 {
-                    fileTypes = new ValueTuple<string, string[]>[]
-                    {
-                        ("JavaScript Files", new[] { FileEx.JS, }),
-                        ("Text Files", new[] { FileEx.TXT, }),
-                        //("All Files", new[] { "*", }),
-                    };
-                }
-                else if (OperatingSystem2.IsAndroid())
-                {
-                    fileTypes = new[] { MediaTypeNames.TXT, MediaTypeNames.JS };
-                }
-                else
-                {
-                    fileTypes = null;
-                }
+                    ("JavaScript Files", new[] { FileEx.JS, }),
+                    ("Text Files", new[] { FileEx.TXT, }),
+                };
                 await FilePicker2.PickAsync(ProxyService.Current.AddNewScript, fileTypes);
             });
 

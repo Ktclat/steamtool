@@ -95,43 +95,26 @@ namespace Avalonia.Controls
                     }
                 }
 
-                if (OperatingSystem2.IsWindows())
-                {
-                    AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceWin32WindowToTheme(this);
-                }
+                AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>()?.ForceWin32WindowToTheme(this);
             };
 
 #pragma warning disable CA1416 // 验证平台兼容性
-            if (OperatingSystem2.IsWindows())
+            if (OperatingSystem2.IsWindows10AtLeast())
             {
-                if (OperatingSystem2.IsWindows10AtLeast())
-                {
-                    //ExtendClientAreaToDecorationsHint = true;
-                    //ExtendClientAreaTitleBarHeightHint = -1;
+                //ExtendClientAreaToDecorationsHint = true;
+                //ExtendClientAreaTitleBarHeightHint = -1;
 
-                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
-                }
-                else
-                {
-                    ExtendClientAreaToDecorationsHint = true;
-                    ExtendClientAreaTitleBarHeightHint = System.Application.UI.Views.Controls.TitleBar.DefaultHeight;
-
-                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.PreferSystemChrome;
-                    PseudoClasses.Add(":windows7");
-                }
-                PseudoClasses.Add(":windows");
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
             }
-            else if (OperatingSystem2.IsMacOS())
+            else
             {
                 ExtendClientAreaToDecorationsHint = true;
                 ExtendClientAreaTitleBarHeightHint = System.Application.UI.Views.Controls.TitleBar.DefaultHeight;
 
                 ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.PreferSystemChrome;
+                PseudoClasses.Add(":windows7");
             }
-            else
-            {
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
-            }
+            PseudoClasses.Add(":windows");
 #pragma warning restore CA1416 // 验证平台兼容性
 
             //if (!ViewModelBase.IsInDesignMode)

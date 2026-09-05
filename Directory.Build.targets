@@ -1,0 +1,32 @@
+<Project>
+  <!--
+    ArchiSteamFarm's pinned source targets legacy compatibility frameworks.
+    Newer SDKs report two transitive package downgrades for those unused targets as
+    NU1605 errors. The SteamTools Windows build consumes only its net6.0 assembly.
+  -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'ArchiSteamFarm.Library'">
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <NuGetAudit>false</NuGetAudit>
+    <RuntimeIdentifiers>win7-x64;win-x64</RuntimeIdentifiers>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!--
+    SteamTools references a patched Rx.NET source tree on Windows.  Its upstream
+    build metadata pins SDK 6.0.100 and enables package/versioning tasks that are
+    irrelevant when it is consumed as a project reference.  Keep just the .NET 6
+    library target so the application can be built by a supported newer SDK.
+  -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'System.Reactive'">
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'System.Reactive'">
+    <PackageReference Remove="Microsoft.SourceLink.GitHub" />
+    <PackageReference Remove="Nerdbank.GitVersioning" />
+  </ItemGroup>
+</Project>

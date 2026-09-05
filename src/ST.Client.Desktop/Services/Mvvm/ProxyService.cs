@@ -170,8 +170,7 @@ namespace System.Application.Services
                         httpProxyService.IsWindowsProxy = ProxySettings.EnableWindowsProxy.Value;
                         httpProxyService.IsProxyGOG = ProxySettings.IsProxyGOG.Value;
 
-                        // macOS 上目前因权限问题仅支持 0.0.0.0(IPAddress.Any)
-                        httpProxyService.ProxyIp = (!OperatingSystem2.IsMacOS && IPAddress2.TryParse(ProxySettings.SystemProxyIp.Value, out var ip)) ? ip : IPAddress.Any;
+                        httpProxyService.ProxyIp = IPAddress2.TryParse(ProxySettings.SystemProxyIp.Value, out var ip) ? ip : IPAddress.Any;
 
                         httpProxyService.Socks5ProxyEnable = ProxySettings.Socks5ProxyEnable.Value;
                         httpProxyService.Socks5ProxyPortId = ProxySettings.Socks5ProxyPortId.Value;
@@ -192,33 +191,12 @@ namespace System.Application.Services
 
                         if (!ProxySettings.EnableWindowsProxy.Value)
                         {
-                            //if (OperatingSystem2.IsWindows)
-                            //{
-                            //    var inUse = httpProxyService.PortInUse(443);
-                            //    if (inUse)
-                            //    {
-                            //        var p = DI.Get<IDesktopPlatformService>().GetProcessByPortOccupy(443, true);
-                            //        if (p != null)
-                            //        {
-                            //            Toast.Show(string.Format(AppResources.CommunityFix_StartProxyFaild443, p.ProcessName));
-                            //            return;
-                            //        }
-                            //    }
-                            //}
-                            //else
-                            //{
-                            if (OperatingSystem2.IsLinux && ProxySettings.HostProxyPortId == 443 && Environment.UserName.ToLower() != "root")
-                            {
-                                Toast.Show("Liunx Hosts代理模式 需要Root权限，或使用 “sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443” 映射到其他端口且修改代理设置监听端口");
-                                return;
-                            }
                             var inUse = httpProxyService.PortInUse(ProxySettings.HostProxyPortId);
                             if (inUse)
                             {
                                 Toast.Show(string.Format(AppResources.CommunityFix_StartProxyFaild443, ProxySettings.HostProxyPortId, ""));
                                 return;
                             }
-                            //}
                         }
 
                         var isRun = httpProxyService.StartProxy();
@@ -243,24 +221,13 @@ namespace System.Application.Services
                                         });
                                     }).Where(w => !string.IsNullOrEmpty(w.Item1));
 
-                                    if (OperatingSystem2.IsDesktop)
-                                    {
-                                        var r = IHostsFileService.Instance.UpdateHosts(hosts);
+                                    var r = IHostsFileService.Instance.UpdateHosts(hosts);
 
-                                        if (r.ResultType != OperationResultType.Success)
-                                        {
-                                            Toast.Show(SR.OperationHostsError_.Format(r.Message));
-                                            httpProxyService.StopProxy();
-                                            return;
-                                        }
-                                        else if (OperatingSystem2.IsMacOS)
-                                        {
-                                            IPlatformService.Instance.AdminShell($" \\cp \"{Path.Combine(IOPath.CacheDirectory, "hosts")}\" \"{IDesktopPlatformService.Instance.HostsFilePath}\"", true);
-                                        }
-                                        else if (OperatingSystem2.IsLinux && Environment.UserName.ToLower() != "root")
-                                        {
-                                            IPlatformService.Instance.AdminShell($" \\cp \"{Path.Combine(IOPath.CacheDirectory, "hosts")}\" \"{IDesktopPlatformService.Instance.HostsFilePath}\"", true);
-                                        }
+                                    if (r.ResultType != OperationResultType.Success)
+                                    {
+                                        Toast.Show(SR.OperationHostsError_.Format(r.Message));
+                                        httpProxyService.StopProxy();
+                                        return;
                                     }
                                 }
                             }
@@ -288,10 +255,6 @@ namespace System.Application.Services
                                 {
                                     Toast.Show(SR.OperationHostsError_.Format(r.Message));
                                     //return;
-                                }
-                                else if (OperatingSystem2.IsMacOS && !ProxySettings.EnableWindowsProxy.Value)
-                                {
-                                    IPlatformService.Instance.AdminShell($" \\cp \"{Path.Combine(IOPath.CacheDirectory, "hosts")}\" \"{IDesktopPlatformService.Instance.HostsFilePath}\"", true);
                                 }
                             }
                         }

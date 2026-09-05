@@ -2335,12 +2335,6 @@ AAAAA-BBBBB-CCCC3</value>
   <data name="Download_Success_FileNameTip" xml:space="preserve">
     <value>下载 {0} 成功</value>
   </data>
-  <data name="Advertisement" xml:space="preserve">
-    <value>广告</value>
-  </data>
-  <data name="Advertisement_Close" xml:space="preserve">
-    <value>关闭广告</value>
-  </data>
   <data name="Sign" xml:space="preserve">
     <value>签到</value>
   </data>
@@ -2373,12 +2367,6 @@ AAAAA-BBBBB-CCCC3</value>
   </data>
   <data name="User_Experience" xml:space="preserve">
     <value>经验值</value>
-  </data>
-  <data name="Advertisement_NoShow" xml:space="preserve">
-    <value>关闭程序内所有广告</value>
-  </data>
-  <data name="Advertisement_NoShow_Tip" xml:space="preserve">
-    <value>仅赞助用户可设置</value>
   </data>
   <data name="SeeDetails" xml:space="preserve">
     <value>查看详情</value>

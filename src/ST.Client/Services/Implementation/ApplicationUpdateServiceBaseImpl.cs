@@ -76,9 +76,7 @@ namespace System.Application.Services.Implementation
             get
             {
                 if (DesktopBridge.IsRunningAsUwp ||
-                    OperatingSystem2.IsOnlySupportedStore() ||
-                    OperatingSystem2.IsLinux() ||
-                    OperatingSystem2.IsMacOS())
+                    OperatingSystem2.IsOnlySupportedStore())
                 {
                     return false;
                 }
@@ -310,15 +308,7 @@ namespace System.Application.Services.Implementation
                     goto end;
                 }
 
-                var isAndroid = OperatingSystem2.IsAndroid();
-                var isDesktop = OperatingSystem2.IsDesktop();
-                if (!isAndroid && !isDesktop)
-                {
-                    OpenInAppStore();
-                    goto end;
-                }
-
-                if (!isAndroid && newVersionInfo.CurrentAllFiles.Any_Nullable() &&
+                if (newVersionInfo.CurrentAllFiles.Any_Nullable() &&
                     newVersionInfo.CurrentAllFiles.All(x => x.HasValue()) &&
                     newVersionInfo.AllFiles.Any_Nullable() &&
                     newVersionInfo.AllFiles.All(x => x.HasValue())) // 增量更新 v2
@@ -456,21 +446,10 @@ namespace System.Application.Services.Implementation
                     AppVersionDTO.Download? download = null;
                     if (newVersionInfo.Downloads != null)
                     {
-                        if (isAndroid)
+                        download = GetByDownloadChannelSettings(newVersionInfo.Downloads.Where(x => x.DownloadType == AppDownloadType.Compressed_7z));
+                        if (download == null)
                         {
-                            download = GetByDownloadChannelSettings(newVersionInfo.Downloads.Where(x => x.DownloadType == AppDownloadType.Install));
-                        }
-                        else if (isDesktop)
-                        {
-                            download = GetByDownloadChannelSettings(newVersionInfo.Downloads.Where(x => x.DownloadType == AppDownloadType.Compressed_7z));
-                            if (download == null)
-                            {
-                                download = GetByDownloadChannelSettings(newVersionInfo.Downloads.Where(x => x.DownloadType == AppDownloadType.Compressed_GZip));
-                            }
-                        }
-                        else
-                        {
-                            throw new PlatformNotSupportedException();
+                            download = GetByDownloadChannelSettings(newVersionInfo.Downloads.Where(x => x.DownloadType == AppDownloadType.Compressed_GZip));
                         }
                     }
                     if (download.HasValue()) // 压缩包格式是否正确

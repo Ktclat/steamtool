@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace System.Application.Services.CloudService
 {
-    public sealed partial class MockCloudServiceClient : ICloudServiceClient, IAccountClient, IManageClient, IAuthMessageClient, IVersionClient, IActiveUserClient, IAccelerateClient, IScriptClient, IDonateRankingClient, INoticeClient, IAdvertisementClient
+    public sealed partial class MockCloudServiceClient : ICloudServiceClient, IAccountClient, IManageClient, IAuthMessageClient, IVersionClient, IActiveUserClient, IAccelerateClient, IScriptClient, IDonateRankingClient, INoticeClient
     {
         readonly IToast toast;
         readonly IModelValidator validator;
@@ -42,8 +42,6 @@ namespace System.Application.Services.CloudService
         public IDonateRankingClient DonateRanking => this;
 
         public INoticeClient Notice => this;
-
-        public IAdvertisementClient Advertisement => this;
 
         #region ModelValidator
 
@@ -297,10 +295,6 @@ namespace System.Application.Services.CloudService
             throw new NotImplementedException();
         }
 
-        public Task<IApiResponse<List<AdvertisementDTO>>> All(EAdvertisementType? type = EAdvertisementType.Banner)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 #endif

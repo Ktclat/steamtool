@@ -70,29 +70,14 @@ namespace System.Application.Services
                             });
                         }
 
-                        if (IApplication.IsDesktopPlatform)
-                        {
 #pragma warning disable CA1416 // 验证平台兼容性
-                            reverseProxyService.IsOnlyWorkSteamBrowser = ProxySettings.IsOnlyWorkSteamBrowser.Value;
-                            reverseProxyService.ProxyMode = ProxySettings.ProxyModeValue;
-                            reverseProxyService.IsProxyGOG = ProxySettings.IsProxyGOG.Value;
+                        reverseProxyService.IsOnlyWorkSteamBrowser = ProxySettings.IsOnlyWorkSteamBrowser.Value;
+                        reverseProxyService.ProxyMode = ProxySettings.ProxyModeValue;
+                        reverseProxyService.IsProxyGOG = ProxySettings.IsProxyGOG.Value;
 #pragma warning restore CA1416 // 验证平台兼容性
-                        }
-                        else
-                        {
-                            reverseProxyService.ProxyMode = ProxyMode.System;
-                        }
 
                         reverseProxyService.ProxyIp = IPAddress2.TryParse(ProxySettings.SystemProxyIp.Value, out var ip) ? ip : IPAddress.Any;
-
-                        // macOS\Linux 上目前因权限问题仅支持 0.0.0.0(IPAddress.Any)
-                        if ((OperatingSystem2.IsMacOS() || OperatingSystem2.IsLinux()) && IPAddress.IsLoopback(IReverseProxyService.Instance.ProxyIp))
-                        {
-                            reverseProxyService.ProxyIp = IPAddress.Any;
-                        }
-
-                        // Android VPN 模式使用 tun2socks
-                        reverseProxyService.Socks5ProxyEnable = ProxySettings.Socks5ProxyEnable.Value || (OperatingSystem2.IsAndroid() && ProxySettings.ProxyModeValue == ProxyMode.VPN);
+                        reverseProxyService.Socks5ProxyEnable = ProxySettings.Socks5ProxyEnable.Value;
                         reverseProxyService.Socks5ProxyPortId = ProxySettings.Socks5ProxyPortId.Value;
                         if (!ModelValidatorProvider.IsPortId(reverseProxyService.Socks5ProxyPortId)) reverseProxyService.Socks5ProxyPortId = ProxySettings.DefaultSocks5ProxyPortId;
 
@@ -121,21 +106,12 @@ namespace System.Application.Services
                             if (inUse)
                             {
                                 string? error_CommunityFix_StartProxyFaild443 = null;
-                                if (OperatingSystem2.IsWindows())
+                                var p = SocketHelper.GetProcessByTcpPort(httpsPort);
+                                if (p != null)
                                 {
-#pragma warning disable CA1416 // 验证平台兼容性
-                                    var p = SocketHelper.GetProcessByTcpPort(httpsPort);
-#pragma warning restore CA1416 // 验证平台兼容性
-                                    if (p != null)
-                                    {
-                                        error_CommunityFix_StartProxyFaild443 = AppResources.CommunityFix_StartProxyFaild443___.Format(httpsPort, p.ProcessName, p.Id);
-                                    }
+                                    error_CommunityFix_StartProxyFaild443 = AppResources.CommunityFix_StartProxyFaild443___.Format(httpsPort, p.ProcessName, p.Id);
                                 }
                                 error_CommunityFix_StartProxyFaild443 ??= AppResources.CommunityFix_StartProxyFaild443_.Format(httpsPort);
-                                if (OperatingSystem2.IsLinux())
-                                {
-                                    Browser2.Open(string.Format(UrlConstants.OfficialWebsite_UnixHostAccess_, WebUtility.UrlEncode(IApplication.ProgramPath)));
-                                }
                                 Toast.Show(error_CommunityFix_StartProxyFaild443);
                                 return;
                             }
@@ -143,7 +119,7 @@ namespace System.Application.Services
                         else if (reverseProxyService.ProxyMode == ProxyMode.System)
                         {
                             var proxyip = reverseProxyService.ProxyIp;
-                            if (OperatingSystem2.IsWindows() && IReverseProxyService.Instance.ProxyIp.Equals(IPAddress.Any))
+                            if (IReverseProxyService.Instance.ProxyIp.Equals(IPAddress.Any))
                             {
                                 proxyip = IPAddress.Loopback;
                             }
@@ -156,7 +132,7 @@ namespace System.Application.Services
                         else if (reverseProxyService.ProxyMode == ProxyMode.PAC)
                         {
                             var proxyip = reverseProxyService.ProxyIp;
-                            if (OperatingSystem2.IsWindows() && IReverseProxyService.Instance.ProxyIp.Equals(IPAddress.Any))
+                            if (IReverseProxyService.Instance.ProxyIp.Equals(IPAddress.Any))
                             {
                                 proxyip = IPAddress.Loopback;
                             }
@@ -201,11 +177,6 @@ namespace System.Application.Services
 
                                     if (r.ResultType != OperationResultType.Success)
                                     {
-                                        if (OperatingSystem2.IsMacOS())
-                                        {
-                                            Browser2.Open(UrlConstants.OfficialWebsite_UnixHostAccess);
-                                            //platformService.RunShell($" \\cp \"{Path.Combine(IOPath.CacheDirectory, "hosts")}\" \"{platformService.HostsFilePath}\"");
-                                        }
                                         Toast.Show(AppResources.OperationHostsError_.Format(r.Message));
                                         await reverseProxyService.StopProxy();
                                         return;
@@ -229,7 +200,6 @@ namespace System.Application.Services
                         reverseProxyService.Scripts = null;
                         void OnStopRemoveHostsByTag()
                         {
-                            if (!IApplication.IsDesktopPlatform) return;
                             var needClear = hostsFileService.ContainsHostsByTag();
                             if (needClear)
                             {
@@ -238,16 +208,6 @@ namespace System.Application.Services
                                 if (r.ResultType != OperationResultType.Success)
                                 {
                                     Toast.Show(AppResources.OperationHostsError_.Format(r.Message));
-
-                                    if (OperatingSystem2.IsMacOS() || (OperatingSystem2.IsLinux() && !platformService.IsAdministrator))
-                                    {
-                                        Browser2.Open(UrlConstants.OfficialWebsite_UnixHostAccess);
-                                    }
-                                    //return;
-                                    //if (OperatingSystem2.IsMacOS() && !ProxySettings.EnableWindowsProxy.Value)
-                                    //{
-                                    //    //platformService.RunShell($" \\cp \"{Path.Combine(IOPath.CacheDirectory, "hosts")}\" \"{platformService.HostsFilePath}\"", true);
-                                    //}
                                 }
                             }
                         }
@@ -359,7 +319,6 @@ namespace System.Application.Services
         {
             get
             {
-                if (OperatingSystem2.IsAndroid() || OperatingSystem2.IsIOS()) return false;
 #pragma warning disable CA1416 // 验证平台兼容性
                 return ProxySettings.IsOnlyWorkSteamBrowser.Value;
 #pragma warning restore CA1416 // 验证平台兼容性
@@ -367,7 +326,6 @@ namespace System.Application.Services
 
             set
             {
-                if (OperatingSystem2.IsAndroid() || OperatingSystem2.IsIOS()) return;
 #pragma warning disable CA1416 // 验证平台兼容性
                 if (ProxySettings.IsOnlyWorkSteamBrowser.Value != value)
                 {
@@ -439,15 +397,7 @@ namespace System.Application.Services
         /// <summary>
         /// 是否使用 <see cref="IHttpService"/> 加载确认物品图片 <see cref="Stream"/>
         /// </summary>
-        static bool IsLoadImage
-        {
-            get
-            {
-                // 此页面当前使用 Square.Picasso 库加载图片
-                if (OperatingSystem2.IsAndroid()) return false;
-                return true;
-            }
-        }
+        static bool IsLoadImage => true;
 
         public async Task InitializeAccelerate()
         {

@@ -15,12 +15,10 @@ namespace System.Application.UI
     public partial interface IApplication
     {
         /// <summary>
-        /// IsWindows or IsMacOS or (IsLinux and !IsAndroid)
+        /// This edition always runs on Windows desktop.
         /// </summary>
         [SupportedOSPlatformGuard("Windows7.0")]
-        [SupportedOSPlatformGuard("macOS")]
-        [SupportedOSPlatformGuard("Linux")]
-        static readonly bool IsDesktopPlatform = OperatingSystem2.IsWindows() || OperatingSystem2.IsMacOS() || (OperatingSystem2.IsLinux() && !OperatingSystem2.IsAndroid());
+        const bool IsDesktopPlatform = true;
 
         static IApplication Instance => DI.Get<IApplication>();
 
@@ -64,7 +62,7 @@ namespace System.Application.UI
 
         /// <summary>
         /// 获取当前平台 UI Host
-        /// <para>reference to the ViewController (if using Xamarin.iOS), Activity (if using Xamarin.Android) IWin32Window or IntPtr (if using .Net Framework).</para>
+        /// <para>Reference to the current Windows desktop host.</para>
         /// </summary>
         object CurrentPlatformUIHost { get; }
 

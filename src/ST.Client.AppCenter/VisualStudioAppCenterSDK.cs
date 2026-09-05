@@ -25,7 +25,6 @@ namespace System.Application
         /// <list type="bullet">
         /// <item>将移动开发人员常用的多种服务整合到一个集成的产品中。</item>
         /// <item>您可以构建，测试，分发和监控移动应用程序，还可以实施推送通知。</item>
-        /// <item>https://docs.microsoft.com/zh-cn/appcenter/sdk/getting-started/xamarin</item>
         /// <item>https://visualstudio.microsoft.com/zh-hans/app-center</item>
         /// </list>
         /// </summary>
@@ -47,17 +46,7 @@ namespace System.Application
         {
 #pragma warning disable SA1114 // Parameter list should follow declaration
 #pragma warning disable SA1111 // Closing parenthesis should be on line of last parameter
-            var r = GetResValue(
-#if XAMARIN_MAC || MONO_MAC || MAC
-                    "appcenter-secret-mac"
-#elif __ANDROID__
-                    "appcenter-secret-android"
-#elif __IOS__
-                    "appcenter-secret-ios"
-#else
-                    "appcenter-secret"
-#endif
-                    );
+            var r = GetResValue("appcenter-secret");
 #pragma warning restore SA1111 // Closing parenthesis should be on line of last parameter
 #pragma warning restore SA1114 // Parameter list should follow declaration
             return r;

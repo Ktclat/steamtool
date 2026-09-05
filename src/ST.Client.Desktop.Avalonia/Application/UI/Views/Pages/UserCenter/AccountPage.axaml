@@ -158,38 +158,6 @@
       <Expander>
         <Expander.Header>
           <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="账号绑定"/>
-          </DockPanel>
-        </Expander.Header>
-        <StackPanel Spacing="10">
-          <Border Classes="Item">
-            <DockPanel>
-              <TextBlock Text="关闭程序内广告"/>
-              <ToggleSwitch />
-            </DockPanel>
-          </Border>
-        </StackPanel>
-      </Expander>
-
-      <Expander>
-        <Expander.Header>
-          <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="账号设置"/>
-          </DockPanel>
-        </Expander.Header>
-        <StackPanel Spacing="10">
-          <Border Classes="Item">
-            <DockPanel>
-              <TextBlock Text="关闭程序内广告"/>
-              <ToggleSwitch />
-            </DockPanel>
-          </Border>
-        </StackPanel>
-      </Expander>
-
-      <Expander>
-        <Expander.Header>
-          <DockPanel HorizontalAlignment="Stretch">
             <TextBlock Text="安全设置"/>
           </DockPanel>
         </Expander.Header>
