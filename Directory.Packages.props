@@ -183,7 +183,7 @@
     <PackageVersion Include="SQLitePCLRaw.bundle_green" Version="2.1.3" />
 
     <!-- .NET Compat -->
-    <PackageVersion Include="OperatingSystem2" Version="2.0.0" />
+    <PackageVersion Include="OperatingSystem2" Version="3.0.0" />
 
     <!-- Serialize -->
     <PackageVersion Include="MessagePack" Version="2.4.59" />
