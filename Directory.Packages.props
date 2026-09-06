@@ -127,11 +127,11 @@
     <PackageVersion Include="SkiaSharp" Version="2.88.3" />
 
     <!-- AutoMapper -->
-    <PackageVersion Include="AutoMapper" Version="12.0.0" />
+    <PackageVersion Include="AutoMapper" Version="12.0.1" />
     <PackageVersion Include="AutoMapper.Collection" Version="9.0.0" />
     <PackageVersion Include="AutoMapper.Collection.EntityFrameworkCore" Version="8.0.0" />
     <PackageVersion Include="AutoMapper.Extensions.ExpressionMapping" Version="6.0.2" />
-    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 
     <!-- QRCode -->
     <!--<PackageVersion Include="QRCoder" Version="1.4.2" />-->
