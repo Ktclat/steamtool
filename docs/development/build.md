@@ -3,11 +3,14 @@
 ## 推荐环境
 
 - Git（需要子模块支持）；
-- .NET SDK 6.0.x；
+- .NET SDK 6.0.428；
 - Windows 桌面构建建议使用 Windows 10/11 x64。
 
 官方 `2.8.6` 的 GitHub Actions 明确使用 .NET 6.0.x。该版本年代较早，使用更新 SDK 时可能遇到
 旧 NuGet 包、目标框架或分析器兼容问题，因此优先使用与上游一致的 SDK。
+
+仓库根目录的 `global.json` 将 SDK 固定为 .NET 6 的最后一个 SDK `6.0.428`，避免 GitHub Runner
+或开发机上安装的较新 SDK 被自动选中。
 
 不要用整个解决方案的 `dotnet build` 代替官方流程。解决方案还包含 Desktop Bridge、iOS、
 .NET Framework 3.5 和发布工具项目，需要额外 workload、Desktop MSBuild 与旧目标包；上游 CI
@@ -61,6 +64,16 @@ dotnet test '.\tests\ST.Client.Desktop.UnitTest\ST.Client.Desktop.UnitTest.cspro
 还原期间会报告 2.8.6 固定的部分旧依赖存在已知安全公告，包括 MessagePack 2.4.59、
 System.Text.Json 6.0.2、AutoMapper 12.0.0 与 SkiaSharp 2.88.3。本次修改坚持最小范围，未升级依赖；
 后续发布前应另开兼容性与安全升级任务，并重新执行完整回归测试。
+
+## GitHub Actions 测试产物
+
+`.github/workflows/dotnet.yml` 在影响应用构建的内容推送到 `main` 时自动运行，也支持在 Actions 页面
+手动运行。该工作流在 `windows-2022` 上执行单元测试，并使用 `win-x64` 发布配置生成自包含 Release
+便携版，随后上传名称形如 `SteamTool-2.8.6-adfree-win-x64-<commit>` 的临时 Artifact，保留 14 天。
+
+Artifact 内的 `BUILD-INFO.txt` 记录源码提交、SDK、构建方式和主程序 SHA-256。该产物不读取上游私有
+凭据、不进行代码签名，也不会自动创建 GitHub Release；仅用于本分支功能验证，Windows 可能显示
+未知发布者或 SmartScreen 提示。
 
 ## 发布注意事项
 
