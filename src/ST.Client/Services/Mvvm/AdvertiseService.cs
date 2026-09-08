@@ -17,6 +17,10 @@ namespace System.Application.Services
 {
     public class AdvertiseService : ReactiveObject
     {
+        // Fork policy: keep the upstream advertisement implementation intact,
+        // but disable both advertisement requests and presentation by default.
+        internal const bool EnableAdvertisements = false;
+
         static AdvertiseService? mCurrent;
 
         public static AdvertiseService Current => mCurrent ?? new();
@@ -35,7 +39,7 @@ namespace System.Application.Services
         public bool IsInitialized { get; set; }
 
         [Reactive]
-        public bool IsShowAdvertise { get; set; } = true;
+        public bool IsShowAdvertise { get; set; } = EnableAdvertisements;
 
         private AdvertiseService()
         {
@@ -83,6 +87,13 @@ namespace System.Application.Services
 
         public async void InitAdvertise()
         {
+            if (!EnableAdvertisements)
+            {
+                IsInitialized = true;
+                IsShowAdvertise = false;
+                return;
+            }
+
             if (IsInitialized == false)
             {
                 await RefrshAdvertise();
@@ -93,6 +104,11 @@ namespace System.Application.Services
 
         public async Task RefrshAdvertise()
         {
+            if (!EnableAdvertisements)
+            {
+                return;
+            }
+
             var client = ICloudServiceClient.Instance.Advertisement;
             var result = await client.All();
 
@@ -117,6 +133,12 @@ namespace System.Application.Services
 
         private void CheckShow()
         {
+            if (!EnableAdvertisements)
+            {
+                IsShowAdvertise = false;
+                return;
+            }
+
             if (!AdvertiseService.Current.IsInitialized)
             {
                 IsShowAdvertise = false;

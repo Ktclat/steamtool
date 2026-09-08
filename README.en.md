@@ -4,6 +4,16 @@
 
 English | [简体中文](./README.md)
 
+> [!IMPORTANT]
+> This is an unofficial derivative source distribution based on the official Watt Toolkit (Steam++) `2.8.6` release.
+> It is not affiliated with the upstream release. In-app advertisement requests and presentation are disabled by
+> default in this branch, while the upstream advertisement implementation and sponsor features remain intact.
+> See the [project documentation](./docs/README.md) and [change log](./docs/project/CHANGELOG.md).
+
+Total visits:
+
+[![Moe Counter](https://count.getloli.com/@ktclat-steamtool?theme=moebooru)](https://github.com/journey-ad/Moe-Counter)
+
 "Watt Toolkit" is an open source cross-platform multi-purpose game toolkit, most of its features require you to download and install Steam to use it.
 
 ![Release Download](https://img.shields.io/github/downloads/rmbadmin/SteamTools/total?style=flat-square)

@@ -4,6 +4,15 @@
 
 [English](./README.en.md) | 简体中文
 
+> [!IMPORTANT]
+> 这是基于 Watt Toolkit（Steam++）官方 `2.8.6` 的非官方二次发行源码，
+> 与上游官方发行版无隶属关系。本分支默认禁用应用内广告请求与展示，其他广告实现及赞助功能保持上游原样。
+> 请先阅读[项目文档](./docs/README.md)与[修改说明](./docs/project/CHANGELOG.md)。
+
+累计访问次数：
+
+[![Moe Counter](https://count.getloli.com/@ktclat-steamtool?theme=moebooru)](https://github.com/journey-ad/Moe-Counter)
+
 「Watt Toolkit」是一个开源跨平台的多功能游戏工具箱，此工具的大部分功能都是需要您下载安装 Steam 才能使用。
 
 ![Release Download](https://img.shields.io/github/downloads/BeyondDimension/SteamTools/total?style=flat-square)
