@@ -28,6 +28,10 @@
 - 在中英文 README 中加入共用 `ktclat-steamtool` 计数键的 Moe Counter 累计访问计数；
 - 新增广告实现审阅、构建说明、上游与许可证说明。
 
+### 仓库维护
+
+- 移除上游的每日 Dependabot 版本更新配置，避免自动创建依赖更新分支；依赖升级改为经过兼容性审阅后人工提交。
+
 ### 基线
 
 - 上游仓库：`BeyondDimension/SteamTools`；
