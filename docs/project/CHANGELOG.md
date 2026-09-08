@@ -14,13 +14,16 @@
 
 - 显式调用 `Enumerable.Reverse`，避免使用较新 .NET SDK 编译时数组原地 `Reverse` API 与 LINQ 扩展解析冲突；
   该机械调整覆盖 AES 参数序列化、Hosts 文件倒序检查以及对应单元测试，不改变原有枚举顺序或业务结果。
+- 将桌面应用和 Jump List 项目的 Windows SDK 投影包对齐到仓库平台配置使用的 `10.0.19041.26`，
+  消除完整 Release 构建中的 `NETSDK1148` 程序集版本冲突。
+- Actions 发布命令显式沿用根仓库对 `NU1605` 的抑制，避免 ArchiSteamFarm 子模块配置遮蔽根级策略。
 
 ### 验证
 
 - `ST.Client` 的 `net6.0` Release 目标构建成功；
 - `ST.Client.UnitTest` 共 11 项测试全部通过；
-- 完整桌面 App 在本机 .NET SDK 9.0.309 下止于历史 Windows SDK 投影的 `NETSDK1148` 环境兼容错误，
-  仍需使用上游 CI 指定的 .NET SDK 6.0.x 做最终 App 构建与运行时界面检查。
+- 使用固定的 .NET SDK 6.0.428 完成无签名、自包含 `win-x64` 桌面 App 的本机 Release 发布构建；
+  主程序文件版本与产品版本均为 `2.8.6`。
 - 新增固定 .NET SDK 6.0.428 的 Windows Actions 构建，生成无签名、自包含的 `win-x64` Release
   测试 Artifact，并在产物中记录源码提交与主程序 SHA-256。
 

@@ -73,6 +73,7 @@ jobs:
             -p:PublishProfile=win-x64 `
             -p:DeployOnBuild=true `
             -p:ExtraDefineConstants=win-x64 `
+            -p:NoWarn=NU1605 `
             --nologo
 
       - name: Verify and describe artifact

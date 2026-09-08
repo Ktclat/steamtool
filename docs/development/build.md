@@ -75,6 +75,11 @@ Artifact 内的 `BUILD-INFO.txt` 记录源码提交、SDK、构建方式和主�
 凭据、不进行代码签名，也不会自动创建 GitHub Release；仅用于本分支功能验证，Windows 可能显示
 未知发布者或 SmartScreen 提示。
 
+发布命令显式忽略 `NU1605`，与根目录 `Directory.Build.props` 的既有策略一致。这是因为
+`references/ArchiSteamFarm` 子模块拥有自己的 `Directory.Build.props`，会遮蔽根目录的 NuGet 警告设置。
+应用项目和 Jump List 项目使用的 Windows SDK 投影包也已与 `WindowsPlatform.props` 对齐为
+`10.0.19041.26`，避免不同版本的 `Microsoft.Windows.SDK.NET.dll` 产生 `NETSDK1148` 冲突。
+
 ## 发布注意事项
 
 `packaging/build.ps1` 是上游发布流水线的一部分，会清理发布目录并依赖特定发布参数、签名材料和机密配置。

@@ -36,4 +36,6 @@
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
   </ItemGroup>
 
+  <Import Project="..\..\WindowsPlatform.props" />
+
 </Project>
